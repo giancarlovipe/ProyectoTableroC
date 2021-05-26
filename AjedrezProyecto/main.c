@@ -13,12 +13,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include "Inicializacion.h"
+#include "Impresiones.h"
 /*
  * 
  */
 int main(int argc, char** argv) {
-
+    
+    initTablero();
+    jugar();
+    
+    
     return (EXIT_SUCCESS);
 }
 
