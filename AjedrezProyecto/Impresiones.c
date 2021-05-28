@@ -32,6 +32,7 @@ void solicitarMovimiento(char* color){
     
     printf("%c \n", y);
     printf("%c \n", x);
+    espera();
     
 }
 
@@ -40,11 +41,11 @@ void solicitarMovimientoDestino(char* color){
     printf("%s \n",color);
     
     printf("\nIngrese coordenada: ");
-    scanf("%c", &y);
-    scanf("%c", &x);
+    scanf("%c", &desty);
+    scanf("%c", &destx);
     
-    printf("%c \n", y);
-    printf("%c \n", x);
+    printf("%c \n", desty);
+    printf("%c \n", destx);
 }
 
 void error(char* val){

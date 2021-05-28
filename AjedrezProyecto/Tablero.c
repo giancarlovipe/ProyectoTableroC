@@ -61,15 +61,17 @@ void jugar(){
     conversionCoordenadas(y, x);
     
     
-    if(validaRango(corX,corY)){
-       if(validaFicha(corX,corY)){
+    if(validaRango(corY,corX)){
+       if(validaFicha(corY,corX)){
            colorigen = corX;
            filorigen = corY;
            
-           solicitarMovimientoDestino(color);
+           solicitarMovimientoDestino(color);    
            conversionCoordenadas(desty, destx);
-           if(validaRango(destx,desty)){
            
+           if(validaRango(corX,corY)){
+               movimiento(filorigen, colorigen);
+               printTablero();
                
            }else {
                jugar();
@@ -88,14 +90,15 @@ void jugar(){
     
 }
 
-void movimiento(int filo, int colo){   
-    matrizPiezas[corY][corX].color = matrizPiezas[filo][colo].color;
-    matrizPiezas[corY][corX].tipo = matrizPiezas[filo][colo].tipo;
-    matrizPiezas[corY][corX].primeravez = false;
+void movimiento(int filo, int colo){ 
+
+   matrizPiezas[corY][corX].color = matrizPiezas[filo][colo].color;
+   matrizPiezas[corY][corX].tipo = matrizPiezas[filo][colo].tipo;
+   matrizPiezas[corY][corX].primeravez = false;
     
-    matrizPiezas[filo][colo].color = 'X';
-    matrizPiezas[filo][colo].tipo = ' ';
-    matrizPiezas[filo][colo].primeravez = true;
+   matrizPiezas[filo][colo].color = 'X';
+   matrizPiezas[filo][colo].tipo = ' ';
+   matrizPiezas[filo][colo].primeravez = true;
 }
 
 void cambiaTurno(){
