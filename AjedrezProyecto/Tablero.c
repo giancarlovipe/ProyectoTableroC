@@ -70,6 +70,7 @@ void jugar(){
            conversionCoordenadas(desty, destx);
            
            if(validaRango(corX,corY)){
+               
                movimiento(filorigen, colorigen);
                printTablero();
                
@@ -171,7 +172,96 @@ void conversionCoordenadas(char numero, char letra){
     }
 }
 
-void validaPeon(){
+void buscaTipoPieza(int fil, int col){
+    Pieza p = matrizPiezas[fil][col];
+    
+    switch(p.tipo){
+        case 'P':
+            validaPeonBlanco();
+            break;
+        case 'Q':
+            validaReinaBlanco();
+            break;
+        case 'K':
+            validaReyBlanco();
+            break;
+        case 'C':
+            validaCaballoBlanco();
+            break;
+        case 'A':
+            validaAlfilBlanco();
+            break;        
+        case 'T':
+            validaTorreBlanco();
+            break;
+        case 'p':
+            validaPeonNegro();
+            break;
+        case 'q':
+            validaReinaNegro();
+            break;
+        case 'k':
+            validaReyNegro();
+            break;
+        case 'c':
+            validaCaballoNegro();
+            break;
+        case 'a':
+            validaAlfilNegro();
+            break;        
+        case 't':
+            validaTorreNegro();
+            break;
+        default:
+            error("");
+            break;     
+    }
+}
+
+void validaPeonBlanco(){
     //if()
 }
 
+void validaReyBlanco(){
+    //if()
+}
+
+void validaReinaBlanco(){
+    //if()
+}
+
+void validaAlfilBlanco(){
+    //if()
+}
+
+void validaCaballoBlanco(){
+    //if()
+}
+
+void validaTorreBlanco(){
+    //if()
+}
+
+void validaPeonNegro(){
+    //if()
+}
+
+void validaReyNegro(){
+    //if()
+}
+
+void validaReinaNegro(){
+    //if()
+}
+
+void validaAlfilNegro(){
+    //if()
+}
+
+void validaCaballoNegro(){
+    //if()
+}
+
+void validaTorreNegro(){
+    //if()
+}
