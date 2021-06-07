@@ -13,7 +13,7 @@
 
 #ifndef TABLERO_H
 #define TABLERO_H
-#include "Pieza.h"
+#include "Casilla.h"
 
 #ifdef __cplusplus
 extern "C" {

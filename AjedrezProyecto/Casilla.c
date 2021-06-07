@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-#include "Pieza.h"
+#include "Casilla.h"
 
-Pieza* newPieza(){
-    Pieza *pi = (Pieza*) malloc(sizeof(Pieza));
+Casilla* newCasilla(){
+    Casilla *pi = (Casilla*) malloc(sizeof(Casilla));
     if (pi == NULL) {
         return NULL;
     }

@@ -5,51 +5,61 @@
  */
 #include"Impresiones.h"
 
-void printTablero(){
+void printTableroSolucion(){
     int cont = 8;
-    system("clear"); 
-    
-    for(int i=0;i<8;i++){
+    for (int x = 0; x < 8; x++) {
         printf("%d ", cont);
         cont--;
-        for(int j=0;j<8;j++){
-            printf("| %c ", matrizPiezas[i][j].tipo);
-        }
+            for (int y = 0; y < 8; y++)
+                printf("| %2d ", matrizCasillas[x][y].solucion + 1);
         printf("| \n");
-        
     }
-    printf("%s", "    A   B   C   D   E   F   G   H");
+    printf("%s", "     A    B    C    D    E    F    G    H");
 }
 
-void solicitarMovimiento(char* color){
+int printIniciaSistema(){
+    int val;
+    system("clear");
+    printf("********************************************* \n");
+    printf("*** Solucion Problema del Caballo Cerrado *** \n");
+    printf("********************************************* \n\n");
+    printTableroSolucion();
     
-    printf("\nTurno de: ");
-    printf("%s \n",color);
+   printf("\n\n*** Digite una opcion del menu *** \n\n");
+
+    printf("*** 1. Paso a paso del caballo *** \n");
+    printf("*** 2. Recorrido del Caballo   *** \n");
+    printf("*** 3. Salir                   *** \n");
+
+    scanf("%d", &val);
     
-    printf("\nIngrese coordenada: ");
-    scanf("%c", &y);
-    scanf("%c", &x);
-    
-    printf("%c \n", y);
-    printf("%c \n", x);
-    espera();
-    
+    return val;
 }
 
-void solicitarMovimientoDestino(char* color){
-    printf("\nTurno de: ");
-    printf("%s \n",color);
+void printTableroSolucionRecorrido(){
+    int cont = 8;
+    system("clear");
     
-    printf("\nIngrese coordenada: ");
-    scanf("%c", &desty);
-    scanf("%c", &destx);
-    
-    printf("%c \n", desty);
-    printf("%c \n", destx);
+     printf("\n\n*** Recorriendo solucion paso a paso...  \n\n");
+
+    for (int x = 0; x < 8; x++) {
+        printf("%d ", cont);
+        cont--;
+            for (int y = 0; y < 8; y++)
+                printf("| %2c ", matrizCasillas[x][y].caballo);
+        printf("| \n");
+    }
+    printf("%s", "     A    B    C    D    E    F    G    H");
+    return;
 }
 
 void error(char* val){
     printf("\nError! "); 
+    printf("%s", val);
+    espera();
+}
+
+void mensaje(char* val){
     printf("%s", val);
     espera();
 }
@@ -64,4 +74,5 @@ void espera(){
         printf("\n\n Presione enter para continuar...");
         getchar();
     }
+    return;
 }

@@ -24,7 +24,7 @@ extern char y;
 extern char destx;
 extern char desty;
 
-extern Pieza **matrizPiezas;
+extern Casilla **matrizCasillas;
 
 void printTablero();
 void solicitarMovimiento(char*);

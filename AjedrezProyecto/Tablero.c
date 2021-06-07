@@ -1,37 +1,30 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
+ /* To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 #include "Tablero.h"
 
-Pieza **matrizPiezas;
+Casilla **matrizCasillas;
 int fil;
 int col;
-int corX;
-int corY;
-char x;
-char y;
-char destx;
-char desty;
-char turno = 'B';
 
+int coorX[8] = { 2, 1, -1, -2, -2, -1, 1, 2 };
+int coorY[8] = { 1, 2, 2, 1, -1, -2, -2, -1 };
+
+int posx;
+int posy;
+
+int actual;
+int antx, anty;
+
+    
 void newTablero(){
     fil =8, col=8;
-    matrizPiezas = fil * col;
-    matrizPiezas = malloc(sizeof(Pieza *) * fil);
+    matrizCasillas = fil * col;
+    matrizCasillas = malloc(sizeof(Casilla *) * fil);
     for (int i = 0; i < fil; i++)
     {
-       matrizPiezas[i] = malloc(sizeof(Pieza) * col);
-    }
-}
-
-bool validaFicha(int x, int y){    
-    if (matrizPiezas[x][y].color == turno && matrizPiezas[x][y].tipo != ' '){
-        return true;
-    } else {
-        error("No existe una pieza en esa coordenada o el color de la pieza no es valido!!");
-        return false;
+       matrizCasillas[i] = malloc(sizeof(Casilla) * col);
     }
 }
 
@@ -44,224 +37,98 @@ bool validaRango(int fil, int col){
     }
 }
 
-void jugar(){
-    char* color;
-    int colorigen =0;
-    int filorigen=0;
+bool validaPosicion(int x, int y) {
+    return (x >= 0 && x < 8 && y >= 0 && y < 8
+            && matrizCasillas[x][y].solucion == -1);
+}
+
+int creaRuta(int x, int y, int mov, int movx[8], int movy[8]) {
+    int val, sigx, sigy;
     
-    printTablero();
-    
-    if(turno == 'B') {
-        color = "Blanco";
-    }
-    else color = "Negro";
-    
-   
-    solicitarMovimiento(color);
-    conversionCoordenadas(y, x);
-    
-    
-    if(validaRango(corY,corX)){
-       if(validaFicha(corY,corX)){
-           colorigen = corX;
-           filorigen = corY;
-           
-           solicitarMovimientoDestino(color);    
-           conversionCoordenadas(desty, destx);
-           
-           if(validaRango(corX,corY)){
-               
-               movimiento(filorigen, colorigen);
-               printTablero();
-               
-           }else {
-               jugar();
-           }
-           
-       } else {
-            jugar();
+    if (mov == 8 * 8)
+        return 1;
+ 
+    for (val = 0; val < 8; val++) {
+        sigx = x + movx[val];
+        sigy = y + movy[val];
+        if (validaPosicion(sigx, sigy)) {
+            matrizCasillas[sigx][sigy].solucion = mov;
+            if (creaRuta(sigx, sigy, mov + 1,movx, movy) == 1)
+                return 1;
+            else
+                matrizCasillas[sigx][sigy].solucion = -1; 
         }
-    } else {
-        jugar();
     }
-        
+    return 0;
+}
+
+void recorridoPasoAPaso(int actual, int control){
     
+    if(actual < 64){
+        for(int i = 0; i < 8; i++){
+            for(int j = 0; j < 8; j++){
+                if(matrizCasillas[i][j].solucion == actual){      
+                    matrizCasillas[antx][anty].caballo = '*'; 
+                    matrizCasillas[i][j].caballo = 'C';
+                    printTableroSolucionRecorrido();
+                    if(control == 0){ 
+                        espera();
+                    }
+                    if(control == 1){
+                        sleep(1);
+                    }
+                    antx = i, anty = j;
+                    break;
+                }
+            }
+        }
+        recorridoPasoAPaso(actual+1, control);
         
-    cambiaTurno();
+    }
+    else {
+        mensaje("\nRecorrido finalizado exitosamente! ");
+    }
+}
+
+void jugar(){
+    initTablero();
     
+    matrizCasillas[0][0].solucion = 0;
+    matrizCasillas[0][0].caballo = 'C';
+    
+    if (creaRuta(0, 0, 1, coorX, coorY) == 0) {
+        error("Error! solucion no existe!");
+        return 0;
+    }
+    else {
+        int res = printIniciaSistema();
+        antx = 0, anty = 0;
+        switch(res){
+            case 1:
+               recorridoPasoAPaso(0, 0);
+               jugar();
+               break;
+            case 2:
+                recorridoPasoAPaso(0, 1);
+                jugar();
+                break;
+            case 3:
+                system("clear");
+              mensaje("*** Gracias! ***");
+                break;
+                
+            default:
+                error("Opcion invalida!");
+                jugar();
+                break;
+            
+        }
+    }
+ 
+    return 1;
 }
 
 void movimiento(int filo, int colo){ 
 
-   matrizPiezas[corY][corX].color = matrizPiezas[filo][colo].color;
-   matrizPiezas[corY][corX].tipo = matrizPiezas[filo][colo].tipo;
-   matrizPiezas[corY][corX].primeravez = false;
-    
-   matrizPiezas[filo][colo].color = 'X';
-   matrizPiezas[filo][colo].tipo = ' ';
-   matrizPiezas[filo][colo].primeravez = true;
 }
 
-void cambiaTurno(){
-    if(turno == 'B'){
-        turno = 'N';
-    } else {
-        turno = 'B';
-    }
-}
-
-void conversionCoordenadas(char numero, char letra){ 
-    switch(numero){
-        case '1':
-            corY = 7;
-            break;
-        case '2':
-            corY = 6;
-            break;
-        case '3':
-            corY = 5;
-            break;
-        case '4':
-            corY = 4;
-            break;
-        case '5':
-            corY = 3;
-            break;        
-        case '6':
-            corY = 2;
-            break;
-        case '7':
-            corY = 1;
-            break;
-        case '8':
-            corY = 0;
-            break;
-        default:
-            corY = -1;
-            break;     
-    }
-    
-    switch(letra){
-        case 'H':
-            corX = 7;
-            break;
-        case 'G':
-            corX = 6;
-            break;
-        case 'F':
-            corX = 5;
-            break;
-        case 'E':
-            corX = 4;
-            break;
-        case 'D':
-            corX = 3;
-            break;        
-        case 'C':
-            corX = 2;
-            break;
-        case 'B':
-            corX = 1;
-            break;
-        case 'A':
-            corX = 0;
-            break;
-        default:
-            corX = -1;
-            break;     
-    }
-}
-
-void buscaTipoPieza(int fil, int col){
-    Pieza p = matrizPiezas[fil][col];
-    
-    switch(p.tipo){
-        case 'P':
-            validaPeonBlanco();
-            break;
-        case 'Q':
-            validaReinaBlanco();
-            break;
-        case 'K':
-            validaReyBlanco();
-            break;
-        case 'C':
-            validaCaballoBlanco();
-            break;
-        case 'A':
-            validaAlfilBlanco();
-            break;        
-        case 'T':
-            validaTorreBlanco();
-            break;
-        case 'p':
-            validaPeonNegro();
-            break;
-        case 'q':
-            validaReinaNegro();
-            break;
-        case 'k':
-            validaReyNegro();
-            break;
-        case 'c':
-            validaCaballoNegro();
-            break;
-        case 'a':
-            validaAlfilNegro();
-            break;        
-        case 't':
-            validaTorreNegro();
-            break;
-        default:
-            error("");
-            break;     
-    }
-}
-
-void validaPeonBlanco(){
-    //if()
-}
-
-void validaReyBlanco(){
-    //if()
-}
-
-void validaReinaBlanco(){
-    //if()
-}
-
-void validaAlfilBlanco(){
-    //if()
-}
-
-void validaCaballoBlanco(){
-    //if()
-}
-
-void validaTorreBlanco(){
-    //if()
-}
-
-void validaPeonNegro(){
-    //if()
-}
-
-void validaReyNegro(){
-    //if()
-}
-
-void validaReinaNegro(){
-    //if()
-}
-
-void validaAlfilNegro(){
-    //if()
-}
-
-void validaCaballoNegro(){
-    //if()
-}
-
-void validaTorreNegro(){
-    //if()
-}

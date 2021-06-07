@@ -1,3 +1,3 @@
-build/Debug/Cygwin-Windows/Tablero.o: Tablero.c Tablero.h Pieza.h
+build/Debug/Cygwin-Windows/Tablero.o: Tablero.c Tablero.h Casilla.h
 Tablero.h:
-Pieza.h:
+Casilla.h:

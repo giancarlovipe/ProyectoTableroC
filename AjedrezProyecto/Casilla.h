@@ -11,8 +11,8 @@
  * Created on May 25, 2021, 4:30 PM
  */
 
-#ifndef PIEZA_H
-#define PIEZA_H
+#ifndef CASILLA_H
+#define CASILLA_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,16 +25,15 @@ extern "C" {
 #include<time.h>
 #include <string.h>
 
-typedef struct Pieza {
+typedef struct Casilla {
     int fila;
     int columna;
-    char color;
-    char tipo;
-    bool primeravez;
-} Pieza;
+    int solucion;
+    char caballo;
+} Casilla;
 
-Pieza* newPieza();
-void deletePieza(Pieza*);
+Casilla* newCasilla();
+void deleteCasilla(Casilla*);
 
 
 
@@ -42,5 +41,5 @@ void deletePieza(Pieza*);
 }
 #endif
 
-#endif /* PIEZA_H */
+#endif /* CASILLA_H */
 

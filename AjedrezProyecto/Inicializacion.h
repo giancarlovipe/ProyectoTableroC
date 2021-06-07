@@ -19,15 +19,11 @@
 extern "C" {
 #endif
 
-extern Pieza **matrizPiezas;
+extern Casilla **matrizCasillas;
 extern int fil;
 extern int col;
 
 void initTablero();
-Pieza initPieza();
-void initPiezas();
-void printTablero();
-void initPeones();
 
 #ifdef __cplusplus
 }
